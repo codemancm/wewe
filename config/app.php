@@ -164,7 +164,7 @@ return [
 
         // search
         Laravel\Scout\ScoutServiceProvider::class,
-        ScoutEngines\Elasticsearch\ElasticsearchProvider::class,
+        BabenkoIvan\ElasticScoutDriver\ElasticScoutDriverServiceProvider::class,
 
     ],
 
