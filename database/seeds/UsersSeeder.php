@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 use \App\User;
 class UsersSeeder extends Seeder
 {
@@ -42,6 +43,15 @@ class UsersSeeder extends Seeder
             $this->command->info('Account [admin] is present');
         }
 
+        // if there is no vendor create it
+        $vendor = User::where('username','vendor')->first();
+        if ($vendor == null){
+            $this->command->info('There is no [vendor] account, creating it...');
+            $this->generateVendorAccount();
+        } else {
+            $this->command->info('Account [vendor] is present');
+        }
+
         $this->command->info('Starting generation of random accounts...');
         for ($i = 0; $i < $this->numberOfAccounts; $i++){
             $user = new User();
@@ -51,7 +61,7 @@ class UsersSeeder extends Seeder
             $user->password = $userpassword;
             $user->mnemonic = bcrypt(hash('sha256',$username));
             $user->login_2fa = false;
-            $user->referral_code = strtoupper(str_random(6));
+            $user->referral_code = strtoupper(Str::random(6));
             $userKeyPair =  new \App\Marketplace\Encryption\Keypair();
             $userPrivateKey = $userKeyPair->getPrivateKey();
             $userPublicKey = $userKeyPair->getPublicKey();
@@ -66,7 +76,7 @@ class UsersSeeder extends Seeder
             $this->generateDepositAddressSeed($user);//$user -> generateDepositAddresses();
             // every fifth user is vendor
            if ($i % 5 == 0){
-               $user->becomeVendor('testAddress#'.strtoupper(str_random(6)));
+               $user->becomeVendor('testAddress#'.strtoupper(Str::random(6)));
            }
             $this->command->info('Created User '.($i+1).'/'.$this->numberOfAccounts);
             $this->createdAccounts++;
@@ -74,6 +84,37 @@ class UsersSeeder extends Seeder
         $end = (microtime(true) - $start);
         $this->command->info('Successfully generated '.$this->createdAccounts.' users. Elapsed time: '.$this->formatTime($end));
 
+    }
+
+    /**
+     * Generate admin account
+     *
+     * @throws \App\Exceptions\RequestException
+     * @throws \Defuse\Crypto\Exception\EnvironmentIsBrokenException
+     */
+    public function generateVendorAccount(){
+        $vendorpassword = 'vendor123';
+        $vendor = new User();
+        $vendor->username = 'vendor';
+        $vendor->password = bcrypt($vendorpassword);
+        $vendor->mnemonic = bcrypt(hash('sha256', "na kraj sela zuta kuca"));
+        $vendor->login_2fa = false;
+        $vendor->referral_code = "UUF7NZ";
+
+        $vendorKeyPair = new \App\Marketplace\Encryption\Keypair();
+        $vendorPrivateKey = $vendorKeyPair->getPrivateKey();
+        $vendorPublicKey = $vendorKeyPair->getPublicKey();
+        $vendorEncryptedPrivateKey = \Defuse\Crypto\Crypto::encryptWithPassword($vendorPrivateKey, $vendorpassword);
+
+        $vendor->msg_private_key = $vendorEncryptedPrivateKey;
+        $vendor->msg_public_key = encrypt($vendorPublicKey);
+        $vendor->pgp_key = 'test';
+        $vendor->save();
+        $this->generateDepositAddressSeed($vendor);
+        $vendor->becomeVendor('test');
+
+        $this->command->info('Created [vendor] account');
+        $this->createdAccounts++;
     }
 
     /**

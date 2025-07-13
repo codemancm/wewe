@@ -90,8 +90,8 @@ class ProductSeeder extends Seeder
         for($i = 0; $i <= $this->productsToCreate; $i++){
             $newProduct = new Product;
             $newProduct -> name = $faker->streetSuffix;
-            $newProduct -> description = $faker->sentence($nbWords = 6, $variableNbWords = true);
-            $newProduct -> rules = $faker->sentence($nbWords = 6, $variableNbWords = true);
+            $newProduct -> description = implode(' ', $faker->words(6));
+            $newProduct -> rules = implode(' ', $faker->words(6));
             $newProduct -> quantity = rand(1,20);
             $newProduct -> mesure = 'item';
             $newProduct -> coins = 'btc,xmr,stb';
