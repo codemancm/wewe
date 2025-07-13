@@ -19,7 +19,7 @@ class ModuleManager
         if (!\Module::has($module)) {
             return false;
         }
-        if (!\Module::enabled($module)) {
+        if (!\Module::isEnabled($module)) {
             return false;
         }
         return true;

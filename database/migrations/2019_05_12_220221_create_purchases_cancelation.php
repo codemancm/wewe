@@ -14,13 +14,9 @@ class CreatePurchasesCancelation extends Migration
     public function up()
     {
 
-        $stateQutoed = array_map(function($state){
-            return "'$state'";
-        }, array_keys(\App\Purchase::$states));
-        $statesStringinfied = implode(",", $stateQutoed);
-
-        // custom statment to add enum value to states of the purchases
-        DB::statement("ALTER TABLE purchases MODIFY COLUMN state ENUM($statesStringinfied) DEFAULT 'purchased' NOT NULL" );
+        Schema::table('purchases', function (Blueprint $table) {
+            $table->string('state')->default('purchased')->change();
+        });
     }
 
     /**
