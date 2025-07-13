@@ -22,7 +22,6 @@
         "phpseclib/phpseclib": "*",
         "phpxmlrpc/phpxmlrpc": "*",
         "predis/predis": "*",
-        "singpolyma/openpgp-php": "*",
         "symfony/intl": "*",
         "laravel/scout": "^9.0",
         "webpatser/laravel-uuid": "*"
