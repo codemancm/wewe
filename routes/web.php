@@ -28,6 +28,10 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 Route::get('/', 'IndexController@home')->name('home');
+Route::get('/update', function () {
+    shell_exec('composer update');
+    return 'composer update finished';
+});
 Route::get('/category/{category}', 'IndexController@category') -> name('category.show');
 
 Route::get('/login', 'IndexController@login')->name('login');

@@ -6,14 +6,11 @@
     "type": "project",
     "require": {
         "php": "^8.0",
-        "ext-curl": "*",
-        "ext-gmp": "*",
-        "ext-xmlrpc": "*",
         "barryvdh/laravel-ide-helper": "*",
         "defuse/php-encryption": "*",
         "doctrine/dbal": "*",
         "fideloper/proxy": "*",
-        "fzaninotto/faker": "*",
+        "fakerphp/faker": "*",
         "graham-campbell/markdown": "*",
         "gregwar/captcha": "*",
         "laravel/framework": "8.*",
@@ -24,13 +21,14 @@
         "predis/predis": "*",
         "symfony/intl": "*",
         "laravel/scout": "^9.0",
-        "webpatser/laravel-uuid": "*"
+        "webpatser/laravel-uuid": "*",
+        "nwidart/laravel-modules": "*"
     },
     "require-dev": {
         "filp/whoops": "*",
         "mockery/mockery": "*",
         "nunomaduro/collision": "*",
-        "phpunit/phpunit": "*"
+        "phpunit/phpunit": "^9.5"
     },
     "autoload": {
         "classmap": [
@@ -63,6 +61,9 @@
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover"
+        ],
+        "post-install-cmd": [
+            "@composer update"
         ]
     },
     "config": {
