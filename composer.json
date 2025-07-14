@@ -13,7 +13,6 @@
         "defuse/php-encryption": "*",
         "doctrine/dbal": "*",
         "fideloper/proxy": "*",
-        "fzaninotto/faker": "*",
         "graham-campbell/markdown": "*",
         "gregwar/captcha": "*",
         "laravel/framework": "8.*",
